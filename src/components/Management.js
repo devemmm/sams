@@ -1,17 +1,18 @@
-import React from 'react'
-import Asidebar from './sub-components/Asidebar'
-import Footer from './sub-components/Footer'
-import Header from './sub-components/Header'
+import React from "react";
+import AdminForm from "./sub-components/AdminForm";
+import Asidebar from "./sub-components/Asidebar";
+import Footer from "./sub-components/Footer";
+import Header from "./sub-components/Header";
 
 const Management = () => {
   return (
     <>
       <Header />
       <Asidebar />
-      <h2>management</h2>
+      <AdminForm />
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Management
+export default Management;
