@@ -72,7 +72,3 @@ export const news = [
       "Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...",
   },
 ];
-
-const statistsUserData = {
-  citizenCompleteSurvey: 150,
-};

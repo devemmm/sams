@@ -4,12 +4,16 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Users from "./components/Users";
 import Management from "./components/Management";
+import Signin from "./components/Signin";
+import Signup from "./components/Signup";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/management" element={<Management />} />
         <Route path="/profile" element={<Profile />} />
