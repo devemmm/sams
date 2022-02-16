@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SigninForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <>
       <div className="container">
@@ -44,6 +47,11 @@ const SigninForm = () => {
                             name="username"
                             className="form-control"
                             id="yourUsername"
+                            onChange={(e) => {
+                              e.preventDefault();
+
+                              setEmail(e.target.value);
+                            }}
                             required
                           />
                           <div className="invalid-feedback">
@@ -68,6 +76,10 @@ const SigninForm = () => {
                             name="password"
                             className="form-control"
                             id="yourPassword"
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setPassword(e.target.value);
+                            }}
                             required
                           />
                           <div className="invalid-feedback">
