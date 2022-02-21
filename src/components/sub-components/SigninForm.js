@@ -1,9 +1,71 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useReducer, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import ActivityIndicator from "./ActivityIndicator";
+import Alert from "./Alert";
+import samsApi from "../apis/sams-api";
 
-const SigninForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "email":
+      return { ...state, email: action.payload };
+    case "password":
+      return { ...state, password: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+const SigninForm = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
+  const [state, dispatch] = useReducer(reducer, { email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const navigate = useNavigate();
+  const handleSignin = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    fetch(`${samsApi}/users/signin`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...state,
+      }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.status !== 200) {
+          setIsLoading(false);
+          setShowAlert(true);
+          setAlertType("danger");
+          setAlertMessage(res.message);
+        } else {
+          setIsLoading(false);
+          const { user } = res.data;
+
+          if (cookies.user) {
+            removeCookie("user", { path: "/" });
+          }
+          setCookie("user", JSON.stringify(user), { path: "/" });
+          navigate("/home", { replace: true });
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setShowAlert(true);
+        setAlertType("danger");
+        setAlertMessage(error.message);
+      });
+  };
 
   return (
     <>
@@ -22,6 +84,10 @@ const SigninForm = () => {
                   </Link>
                 </div>
 
+                {showAlert ? (
+                  <Alert type={alertType} message={alertMessage} />
+                ) : null}
+
                 <div className="card mb-3">
                   <div className="card-body">
                     <div className="pt-4 pb-2">
@@ -30,7 +96,11 @@ const SigninForm = () => {
                       </h5>
                     </div>
 
-                    <form className="row g-3 needs-validation" novalidate>
+                    <form
+                      className="row g-3 needs-validation"
+                      noValidate
+                      onSubmit={handleSignin}
+                    >
                       <div className="col-12">
                         {/* <label for="yourUsername" className="form-label">
                           Username
@@ -40,17 +110,20 @@ const SigninForm = () => {
                             className="input-group-text"
                             id="inputGroupPrepend"
                           >
-                            <i class="bi bi-envelope"></i>
+                            <i className="bi bi-envelope"></i>
                           </span>
                           <input
                             type="text"
                             name="username"
                             className="form-control"
                             id="yourUsername"
+                            value={state.email}
                             onChange={(e) => {
                               e.preventDefault();
-
-                              setEmail(e.target.value);
+                              dispatch({
+                                type: "email",
+                                payload: e.target.value,
+                              });
                             }}
                             required
                           />
@@ -69,16 +142,20 @@ const SigninForm = () => {
                             className="input-group-text"
                             id="inputGroupPrepend"
                           >
-                            <i class="bi bi-key"></i>
+                            <i className="bi bi-key"></i>
                           </span>
                           <input
                             type="password"
                             name="password"
                             className="form-control"
                             id="yourPassword"
+                            value={state.password}
                             onChange={(e) => {
                               e.preventDefault();
-                              setPassword(e.target.value);
+                              dispatch({
+                                type: "password",
+                                payload: e.target.value,
+                              });
                             }}
                             required
                           />
@@ -97,10 +174,19 @@ const SigninForm = () => {
                             value="true"
                             id="rememberMe"
                           />
-                          <label className="form-check-label" for="rememberMe">
+                          <label
+                            className="form-check-label"
+                            htmlFor="rememberMe"
+                          >
                             Remember me
                           </label>
                         </div>
+
+                        {isLoading ? (
+                          <div style={{ marginTop: 20 }}>
+                            <ActivityIndicator />
+                          </div>
+                        ) : null}
                       </div>
                       <div className="col-12">
                         <button className="btn btn-primary w-100" type="submit">

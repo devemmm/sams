@@ -1,18 +1,16 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Contact from './sub-components/Contact'
-import Footer from './sub-components/Footer'
+import React from "react";
+import Contact from "./sub-components/Contact";
+import Footer from "./sub-components/Footer";
+import Indexnavbar from "./sub-components/Indexnavbar";
 
 const Index = () => {
   return (
     <>
-      <div>
-        <Link to='/home'>Go Home</Link>
-      </div>
+      <Indexnavbar />
       <Contact />
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

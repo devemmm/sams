@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import UserMesages from "../UserMesages";
 import BarchartAnalysis from "./BarchartAnalysis";
 
 const Main = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
+
   return (
     <>
       <main id="main" className="main">
@@ -30,13 +33,13 @@ const Main = () => {
                         Select <span>| Survey</span>
                       </h5>
 
-                      <div class="row mb-3">
-                        <div class="col-sm-12">
+                      <div className="row mb-3">
+                        <div className="col-sm-12">
                           <select
-                            class="form-select"
+                            className="form-select"
                             aria-label="Default select example"
                           >
-                            <option selected>----</option>
+                            <option defaultValue={"1"}>----</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -46,7 +49,7 @@ const Main = () => {
 
                       <button
                         type="button"
-                        class="btn btn-success btn-lg col-sm-12"
+                        className="btn btn-success btn-lg col-sm-12"
                       >
                         Show
                       </button>
@@ -61,13 +64,13 @@ const Main = () => {
                         Delete <span>| Survey</span>
                       </h5>
 
-                      <div class="row mb-3">
-                        <div class="col-sm-12">
+                      <div className="row mb-3">
+                        <div className="col-sm-12">
                           <select
-                            class="form-select"
+                            className="form-select"
                             aria-label="Default select example"
                           >
-                            <option selected>------</option>
+                            <option defaultValue={"1"}>------</option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -77,7 +80,7 @@ const Main = () => {
 
                       <button
                         type="button"
-                        class="btn btn-danger btn-lg col-sm-12"
+                        className="btn btn-danger btn-lg col-sm-12"
                       >
                         Delete
                       </button>
