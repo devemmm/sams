@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { news } from "../data/defaultData";
+import samsApi from "./apis/sams-api";
 
 const UserMesages = () => {
+  const [updates, setUpdates] = useState([]);
+
+  useEffect(() => {
+    fetchUpdates();
+  }, []);
+
+  const fetchUpdates = () => {
+    fetch(`${samsApi}/users/messages`, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.status !== 200) {
+          setUpdates([]);
+          console.log(res);
+        } else {
+          if (res.data.length > 0) {
+            setUpdates(res.data);
+          }
+        }
+      })
+      .catch((error) => {
+        setUpdates([]);
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <div className="card-body pb-0">
@@ -11,7 +42,7 @@ const UserMesages = () => {
         </h5>
 
         <div className="news">
-          {news.map((item, index) => {
+          {updates.map((item, index) => {
             return (
               <div key={index.toString()}>
                 <div className="post-item clearfix">
