@@ -1,11 +1,26 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import _ from "lodash";
 
 const Header = () => {
-  const [cookies] = useCookies(["sams"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
   const [user] = useState(cookies.user);
 
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    if (!_.isEmpty(cookies.user)) {
+      navigate("/", { replace: true });
+    } else {
+      removeCookie("user", { path: "/" });
+      navigate("/", { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    console.log(cookies);
+  }, []);
   return (
     <>
       <header
@@ -284,13 +299,14 @@ const Header = () => {
                 </li>
 
                 <li>
-                  <Link
+                  <button
                     className="dropdown-item d-flex align-items-center"
-                    to="/"
+                    // to="/"
+                    onClick={handleSignOut}
                   >
                     <i className="bi bi-box-arrow-right"></i>
                     <span>Sign Out</span>
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </li>
