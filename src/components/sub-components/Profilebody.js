@@ -1,104 +1,146 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useReducer } from "react";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "fname":
+      return { ...state, fname: action.payload };
+    case "lname":
+      return { ...state, lname: action.payload };
+    case "about":
+      return { ...state, about: action.payload };
+    case "company":
+      return { ...state, company: action.payload };
+    case "country":
+      return { ...state, country: action.payload };
+    case "address":
+      return { ...state, address: action.payload };
+    case "phone":
+      return { ...state, phone: action.payload };
+    default:
+      return state;
+  }
+};
 const Profilebody = () => {
+  const [cookies] = useCookies(["sams"]);
+  const [user] = useState(cookies.user);
+
+  const [state, dispatch] = useReducer(reducer, {
+    fname: user.fname,
+    lname: user.lname,
+    about:
+      "Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.",
+    company: "Sanitation accessability Monitoring System (SAMS)",
+    userType: user.userType,
+    country: "RWANDA",
+    address: "KG 181 Street, KIGALI, Rwanda",
+    phone: user.phone,
+    email: user.email,
+  });
+
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+  };
   return (
     <>
-      <main id='main' className='main'>
-        <div className='pagetitle'>
+      <main id="main" className="main">
+        <div className="pagetitle">
           <h1>Profile</h1>
           <nav>
-            <ol className='breadcrumb'>
-              <li className='breadcrumb-item'>
-                <Link to='/home'>Home</Link>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link to="/home">Home</Link>
               </li>
-              <li className='breadcrumb-item'>Users</li>
-              <li className='breadcrumb-item active'>Profile</li>
+              <li className="breadcrumb-item">Users</li>
+              <li className="breadcrumb-item active">Profile</li>
             </ol>
           </nav>
         </div>
 
-        <section className='section profile'>
-          <div className='row'>
-            <div className='col-xl-4'>
-              <div className='card'>
-                <div className='card-body profile-card pt-4 d-flex flex-column align-items-center'>
+        <section className="section profile">
+          <div className="row">
+            <div className="col-xl-4">
+              <div className="card">
+                <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                   <img
-                    src='assets/img/profile-img.jpg'
-                    alt='Profile'
-                    className='rounded-circle'
+                    src="assets/img/profile-img.jpg"
+                    alt="Profile"
+                    className="rounded-circle"
                   />
-                  <h2>Kevin Anderson</h2>
-                  <h3>Web Designer</h3>
-                  <div className='social-links mt-2'>
-                    <Link to='#' className='twitter'>
-                      <i className='bi bi-twitter'></i>
+                  <h2>
+                    {user.fname} {user.lname}
+                  </h2>
+                  <h3>Position: {user.userType}</h3>
+                  <div className="social-links mt-2">
+                    <Link to="#" className="twitter">
+                      <i className="bi bi-twitter"></i>
                     </Link>
-                    <Link to='#' className='facebook'>
-                      <i className='bi bi-facebook'></i>
+                    <Link to="#" className="facebook">
+                      <i className="bi bi-facebook"></i>
                     </Link>
-                    <Link to='#' className='instagram'>
-                      <i className='bi bi-instagram'></i>
+                    <Link to="#" className="instagram">
+                      <i className="bi bi-instagram"></i>
                     </Link>
-                    <Link to='#' className='linkedin'>
-                      <i className='bi bi-linkedin'></i>
+                    <Link to="#" className="linkedin">
+                      <i className="bi bi-linkedin"></i>
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className='col-xl-8'>
-              <div className='card'>
-                <div className='card-body pt-3'>
-                  <ul className='nav nav-tabs nav-tabs-bordered'>
-                    <li className='nav-item'>
+            <div className="col-xl-8">
+              <div className="card">
+                <div className="card-body pt-3">
+                  <ul className="nav nav-tabs nav-tabs-bordered">
+                    <li className="nav-item">
                       <button
-                        className='nav-link active'
-                        data-bs-toggle='tab'
-                        data-bs-target='#profile-overview'
+                        className="nav-link active"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile-overview"
                       >
                         Overview
                       </button>
                     </li>
 
-                    <li className='nav-item'>
+                    <li className="nav-item">
                       <button
-                        className='nav-link'
-                        data-bs-toggle='tab'
-                        data-bs-target='#profile-edit'
+                        className="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile-edit"
                       >
                         Edit Profile
                       </button>
                     </li>
 
-                    <li className='nav-item'>
+                    <li className="nav-item">
                       <button
-                        className='nav-link'
-                        data-bs-toggle='tab'
-                        data-bs-target='#profile-settings'
+                        className="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile-settings"
                       >
                         Settings
                       </button>
                     </li>
 
-                    <li className='nav-item'>
+                    <li className="nav-item">
                       <button
-                        className='nav-link'
-                        data-bs-toggle='tab'
-                        data-bs-target='#profile-change-password'
+                        className="nav-link"
+                        data-bs-toggle="tab"
+                        data-bs-target="#profile-change-password"
                       >
                         Change Password
                       </button>
                     </li>
                   </ul>
-                  <div className='tab-content pt-2'>
+                  <div className="tab-content pt-2">
                     <div
-                      className='tab-pane fade show active profile-overview'
-                      id='profile-overview'
+                      className="tab-pane fade show active profile-overview"
+                      id="profile-overview"
                     >
-                      <h5 className='card-title'>About</h5>
-                      <p className='small fst-italic'>
+                      <h5 className="card-title">About</h5>
+                      <p className="small fst-italic">
                         Sunt est soluta temporibus accusantium neque nam maiores
                         cumque temporibus. Tempora libero non est unde veniam
                         est qui dolor. Ut sunt iure rerum quae quisquam autem
@@ -106,382 +148,323 @@ const Profilebody = () => {
                         unde.
                       </p>
 
-                      <h5 className='card-title'>Profile Details</h5>
+                      <h5 className="card-title">Profile Details</h5>
 
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label '>
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label ">
                           Full Name
                         </div>
-                        <div className='col-lg-9 col-md-8'>Kevin Anderson</div>
-                      </div>
-
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Company</div>
-                        <div className='col-lg-9 col-md-8'>
-                          Lueilwitz, Wisoky and Leuschke
+                        <div className="col-lg-9 col-md-8">
+                          {user.fname} {user.lname}
                         </div>
                       </div>
 
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Job</div>
-                        <div className='col-lg-9 col-md-8'>Web Designer</div>
-                      </div>
-
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Country</div>
-                        <div className='col-lg-9 col-md-8'>USA</div>
-                      </div>
-
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Address</div>
-                        <div className='col-lg-9 col-md-8'>
-                          A108 Adam Street, New York, NY 535022
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Company</div>
+                        <div className="col-lg-9 col-md-8">
+                          Sanitation accessability Monitoring System (SAMS)
                         </div>
                       </div>
 
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Phone</div>
-                        <div className='col-lg-9 col-md-8'>
-                          (436) 486-3538 x29071
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Job</div>
+                        <div className="col-lg-9 col-md-8">{user.userType}</div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Country</div>
+                        <div className="col-lg-9 col-md-8">RWANDA</div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Address</div>
+                        <div className="col-lg-9 col-md-8">
+                          KG 181 Street, KIGALI, Rwanda
                         </div>
                       </div>
 
-                      <div className='row'>
-                        <div className='col-lg-3 col-md-4 label'>Email</div>
-                        <div className='col-lg-9 col-md-8'>
-                          k.anderson@example.com
-                        </div>
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Phone</div>
+                        <div className="col-lg-9 col-md-8">{user.phone}</div>
+                      </div>
+
+                      <div className="row">
+                        <div className="col-lg-3 col-md-4 label">Email</div>
+                        <div className="col-lg-9 col-md-8">{user.email}</div>
                       </div>
                     </div>
 
                     <div
-                      className='tab-pane fade profile-edit pt-3'
-                      id='profile-edit'
+                      className="tab-pane fade profile-edit pt-3"
+                      id="profile-edit"
                     >
                       <form>
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='profileImage'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="profileImage"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Profile Image
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <img
-                              src='assets/img/profile-img.jpg'
-                              alt='Profile'
+                              src="assets/img/profile-img.jpg"
+                              alt="Profile"
                             />
-                            <div className='pt-2'>
+                            <div className="pt-2">
                               <Link
-                                to='#'
-                                className='btn btn-primary btn-sm'
-                                title='Upload new profile image'
+                                to="#"
+                                className="btn btn-primary btn-sm"
+                                title="Upload new profile image"
                               >
-                                <i className='bi bi-upload'></i>
+                                <i className="bi bi-upload"></i>
                               </Link>
                               <Link
-                                to='#'
-                                className='btn btn-danger btn-sm'
-                                title='Remove my profile image'
+                                to="#"
+                                className="btn btn-danger btn-sm"
+                                title="Remove my profile image"
                               >
-                                <i className='bi bi-trash'></i>
+                                <i className="bi bi-trash"></i>
                               </Link>
                             </div>
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='fullName'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="fullName"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Full Name
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='fullName'
-                              type='text'
-                              className='form-control'
-                              id='fullName'
-                              value='Kevin Anderson'
+                              name="fullName"
+                              type="text"
+                              className="form-control"
+                              id="fullName"
+                              value={state.fname}
+                              // value={state.fname}
+                              // onChange
+                              disabled
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='about'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="about"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             About
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <textarea
-                              name='about'
-                              className='form-control'
-                              id='about'
+                              name="about"
+                              className="form-control"
+                              id="about"
                               // style='height: 100px'
                               style={{ height: 100 }}
-                            >
-                              Sunt est soluta temporibus accusantium neque nam
-                              maiores cumque temporibus. Tempora libero non est
-                              unde veniam est qui dolor. Ut sunt iure rerum quae
-                              quisquam autem eveniet perspiciatis odit. Fuga
-                              sequi sed ea saepe at unde.
-                            </textarea>
+                              value={state.about}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                dispatch({
+                                  type: "about",
+                                  payload: e.target.value,
+                                });
+                              }}
+                            />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='company'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="company"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Company
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='company'
-                              type='text'
-                              className='form-control'
-                              id='company'
-                              value='Lueilwitz, Wisoky and Leuschke'
+                              name="company"
+                              type="text"
+                              className="form-control"
+                              id="company"
+                              value={state.company}
+                              disabled
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='Job'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="Job"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Job
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='job'
-                              type='text'
-                              className='form-control'
-                              id='Job'
-                              value='Web Designer'
+                              name="job"
+                              type="text"
+                              className="form-control"
+                              id="Job"
+                              value={state.userType}
+                              disabled
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='Country'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="Country"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Country
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='country'
-                              type='text'
-                              className='form-control'
-                              id='Country'
-                              value='USA'
+                              name="country"
+                              type="text"
+                              className="form-control"
+                              id="Country"
+                              value={state.country}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                dispatch({
+                                  type: "country",
+                                  payload: e.target.value,
+                                });
+                              }}
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='Address'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="Address"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Address
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='address'
-                              type='text'
-                              className='form-control'
-                              id='Address'
-                              value='A108 Adam Street, New York, NY 535022'
+                              name="address"
+                              type="text"
+                              className="form-control"
+                              id="Address"
+                              value={state.address}
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='Phone'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="Phone"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Phone
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='phone'
-                              type='text'
-                              className='form-control'
-                              id='Phone'
-                              value='(436) 486-3538 x29071'
+                              name="phone"
+                              type="text"
+                              className="form-control"
+                              id="Phone"
+                              value={state.phone}
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='Email'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="Email"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Email
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='email'
-                              type='email'
-                              className='form-control'
-                              id='Email'
-                              value='k.anderson@example.com'
+                              name="email"
+                              type="email"
+                              className="form-control"
+                              id="Email"
+                              value={state.email}
+                              disabled
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
-                          <label
-                            for='Twitter'
-                            className='col-md-4 col-lg-3 col-form-label'
-                          >
-                            Twitter Profile
-                          </label>
-                          <div className='col-md-8 col-lg-9'>
-                            <input
-                              name='twitter'
-                              type='text'
-                              className='form-control'
-                              id='Twitter'
-                              value='https://twitter.com/#'
-                            />
-                          </div>
-                        </div>
-
-                        <div className='row mb-3'>
-                          <label
-                            for='Facebook'
-                            className='col-md-4 col-lg-3 col-form-label'
-                          >
-                            Facebook Profile
-                          </label>
-                          <div className='col-md-8 col-lg-9'>
-                            <input
-                              name='facebook'
-                              type='text'
-                              className='form-control'
-                              id='Facebook'
-                              value='https://facebook.com/#'
-                            />
-                          </div>
-                        </div>
-
-                        <div className='row mb-3'>
-                          <label
-                            for='Instagram'
-                            className='col-md-4 col-lg-3 col-form-label'
-                          >
-                            Instagram Profile
-                          </label>
-                          <div className='col-md-8 col-lg-9'>
-                            <input
-                              name='instagram'
-                              type='text'
-                              className='form-control'
-                              id='Instagram'
-                              value='https://instagram.com/#'
-                            />
-                          </div>
-                        </div>
-
-                        <div className='row mb-3'>
-                          <label
-                            for='Linkedin'
-                            className='col-md-4 col-lg-3 col-form-label'
-                          >
-                            Linkedin Profile
-                          </label>
-                          <div className='col-md-8 col-lg-9'>
-                            <input
-                              name='linkedin'
-                              type='text'
-                              className='form-control'
-                              id='Linkedin'
-                              value='https://linkedin.com/#'
-                            />
-                          </div>
-                        </div>
-
-                        <div className='text-center'>
-                          <button type='submit' className='btn btn-primary'>
+                        <div className="text-center">
+                          <button type="submit" className="btn btn-primary">
                             Save Changes
                           </button>
                         </div>
                       </form>
                     </div>
 
-                    <div className='tab-pane fade pt-3' id='profile-settings'>
+                    <div className="tab-pane fade pt-3" id="profile-settings">
                       <form>
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='fullName'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="fullName"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Email Notifications
                           </label>
-                          <div className='col-md-8 col-lg-9'>
-                            <div className='form-check'>
+                          <div className="col-md-8 col-lg-9">
+                            <div className="form-check">
                               <input
-                                className='form-check-input'
-                                type='checkbox'
-                                id='changesMade'
+                                className="form-check-input"
+                                type="checkbox"
+                                id="changesMade"
                                 checked
                               />
                               <label
-                                className='form-check-label'
-                                for='changesMade'
+                                className="form-check-label"
+                                for="changesMade"
                               >
                                 Changes made to your account
                               </label>
                             </div>
-                            <div className='form-check'>
+                            <div className="form-check">
                               <input
-                                className='form-check-input'
-                                type='checkbox'
-                                id='newProducts'
+                                className="form-check-input"
+                                type="checkbox"
+                                id="newProducts"
                                 checked
                               />
                               <label
-                                className='form-check-label'
-                                for='newProducts'
+                                className="form-check-label"
+                                for="newProducts"
                               >
                                 Information on new products and services
                               </label>
                             </div>
-                            <div className='form-check'>
+                            <div className="form-check">
                               <input
-                                className='form-check-input'
-                                type='checkbox'
-                                id='proOffers'
+                                className="form-check-input"
+                                type="checkbox"
+                                id="proOffers"
                               />
                               <label
-                                className='form-check-label'
-                                for='proOffers'
+                                className="form-check-label"
+                                for="proOffers"
                               >
                                 Marketing and promo offers
                               </label>
                             </div>
-                            <div className='form-check'>
+                            <div className="form-check">
                               <input
-                                className='form-check-input'
-                                type='checkbox'
-                                id='securityNotify'
+                                className="form-check-input"
+                                type="checkbox"
+                                id="securityNotify"
                                 checked
                                 disabled
                               />
                               <label
-                                className='form-check-label'
-                                for='securityNotify'
+                                className="form-check-label"
+                                for="securityNotify"
                               >
                                 Security alerts
                               </label>
@@ -489,8 +472,8 @@ const Profilebody = () => {
                           </div>
                         </div>
 
-                        <div className='text-center'>
-                          <button type='submit' className='btn btn-primary'>
+                        <div className="text-center">
+                          <button type="submit" className="btn btn-primary">
                             Save Changes
                           </button>
                         </div>
@@ -498,63 +481,66 @@ const Profilebody = () => {
                     </div>
 
                     <div
-                      className='tab-pane fade pt-3'
-                      id='profile-change-password'
+                      className="tab-pane fade pt-3"
+                      id="profile-change-password"
                     >
-                      <form>
-                        <div className='row mb-3'>
+                      <form onSubmit={handleChangePassword}>
+                        <div className="row mb-3">
                           <label
-                            for='currentPassword'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="currentPassword"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Current Password
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='password'
-                              type='password'
-                              className='form-control'
-                              id='currentPassword'
+                              name="password"
+                              type="password"
+                              className="form-control"
+                              id="currentPassword"
+                              required
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='newPassword'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="newPassword"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             New Password
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='newpassword'
-                              type='password'
-                              className='form-control'
-                              id='newPassword'
+                              name="newpassword"
+                              type="password"
+                              className="form-control"
+                              id="newPassword"
+                              required
                             />
                           </div>
                         </div>
 
-                        <div className='row mb-3'>
+                        <div className="row mb-3">
                           <label
-                            for='renewPassword'
-                            className='col-md-4 col-lg-3 col-form-label'
+                            for="renewPassword"
+                            className="col-md-4 col-lg-3 col-form-label"
                           >
                             Re-enter New Password
                           </label>
-                          <div className='col-md-8 col-lg-9'>
+                          <div className="col-md-8 col-lg-9">
                             <input
-                              name='renewpassword'
-                              type='password'
-                              className='form-control'
-                              id='renewPassword'
+                              name="renewpassword"
+                              type="password"
+                              className="form-control"
+                              id="renewPassword"
+                              required
                             />
                           </div>
                         </div>
 
-                        <div className='text-center'>
-                          <button type='submit' className='btn btn-primary'>
+                        <div className="text-center">
+                          <button type="submit" className="btn btn-primary">
                             Change Password
                           </button>
                         </div>
@@ -568,7 +554,7 @@ const Profilebody = () => {
         </section>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default Profilebody
+export default Profilebody;

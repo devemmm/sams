@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import UserMesages from "../UserMesages";
 import BarchartAnalysis from "./BarchartAnalysis";
 
 const Main = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
+  // const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
 
   return (
     <>
