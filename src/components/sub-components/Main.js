@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import UserMesages from "../UserMesages";
 import SingleQuetionAnalitics from "./SingleQuetionAnalitics";
 
 const Main = () => {
+  const [cookies] = useCookies('["sams"]');
+  const [surveys, setSurveys] = useState([]);
+
+  const [showDeleteModel, setShowDeleteModel] = useState(true);
+
+  useEffect(() => {
+    setSurveys(cookies.surveys);
+  }, []);
+
+  const handleDeleteSurvey = (e) => {
+    e.preventDefault();
+    setShowDeleteModel(false);
+  };
+
   return (
     <>
       <main id="main" className="main">
         <div className="pagetitle">
-          <h1>Dashboard</h1>
+          <h1>Dashboards</h1>
+
           <nav>
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
@@ -36,10 +52,11 @@ const Main = () => {
                             className="form-select"
                             aria-label="Default select example"
                           >
-                            <option defaultValue={"1"}>----</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {surveys.map((item, index) => (
+                              <option key={item._id} value={item._id}>
+                                {item.name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>
@@ -67,10 +84,11 @@ const Main = () => {
                             className="form-select"
                             aria-label="Default select example"
                           >
-                            <option defaultValue={"1"}>------</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {surveys.map((item, index) => (
+                              <option key={item._id} value={item._id}>
+                                {item.name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>
@@ -78,11 +96,66 @@ const Main = () => {
                       <button
                         type="button"
                         className="btn btn-danger btn-lg col-sm-12"
+                        data-bs-toggle="modal"
+                        data-bs-target="#verticalycentered"
                       >
                         Delete
                       </button>
                     </div>
                   </div>
+
+                  {showDeleteModel ? (
+                    <div>
+                      <div className="card">
+                        <div>
+                          <div
+                            className="modal fade"
+                            id="verticalycentered"
+                            tabIndex="-1"
+                          >
+                            <div className="modal-dialog modal-dialog-centered">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5 className="modal-title">
+                                    Vertically Centered
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  ></button>
+                                </div>
+                                <div className="modal-body">
+                                  This changes should affect some data in
+                                  database please. Are you sure you want to
+                                  delete this survey permanently in Sanitation
+                                  Accessability Monitoring System ?
+                                </div>
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    data-bs-dismiss="modal"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    data-bs-dismiss="modal"
+                                    onClick={(e) => handleDeleteSurvey(e)}
+                                  >
+                                    Yes Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="col-xxl-4 col-xl-12">

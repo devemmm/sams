@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import _ from "lodash";
 
 const Header = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["sams"]);
+  const [cookies, removeCookie] = useCookies(["sams"]);
   const [user] = useState(cookies.user);
 
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    if (!_.isEmpty(cookies.user)) {
+    if (!cookies.user) {
       navigate("/", { replace: true });
     } else {
       removeCookie("user", { path: "/" });
@@ -18,9 +17,6 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(cookies);
-  }, []);
   return (
     <>
       <header

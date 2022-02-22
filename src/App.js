@@ -6,6 +6,7 @@ import Users from "./components/Users";
 import Management from "./components/Management";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
+import Error from "./components/Error";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/management" element={<Management />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/error" element={<Error />} />
       </Routes>
     </BrowserRouter>
   );
