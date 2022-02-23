@@ -3,16 +3,44 @@ import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import UserMesages from "../UserMesages";
 import SingleQuetionAnalitics from "./SingleQuetionAnalitics";
+import samsApi from "../apis/sams-api";
 
 const Main = () => {
-  const [cookies] = useCookies('["sams"]');
+  const [cookies, setCookie] = useCookies('["sams"]');
   const [surveys, setSurveys] = useState([]);
-
   const [showDeleteModel, setShowDeleteModel] = useState(true);
+
+  const [surveyStatistics, setSurveyStatistics] = useState([]);
 
   useEffect(() => {
     setSurveys(cookies.surveys);
+    fetchSurveyAnalysis();
   }, []);
+
+  const fetchSurveyAnalysis = () => {
+    fetch(`${samsApi}/surveyresponses/statistics/621601d3869342337a39c560`, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.status !== 200) {
+        } else {
+          setSurveyStatistics(res.data);
+          setCookie("surveyStatistics", JSON.stringify(res.data), {
+            path: "/",
+          });
+
+          setSurveyStatistics(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   const handleDeleteSurvey = (e) => {
     e.preventDefault();
@@ -280,9 +308,13 @@ const Main = () => {
 
                     {/* start of dii */}
 
-                    <SingleQuetionAnalitics />
-
-                    {/* end of dii */}
+                    {surveyStatistics.map((question, index) => {
+                      return (
+                        <div key={index.toString()}>
+                          <SingleQuetionAnalitics data={question} />
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 

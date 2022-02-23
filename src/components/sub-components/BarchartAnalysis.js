@@ -7,6 +7,7 @@ const data = [
   { name: "Group C", value: 300 },
   { name: "Group D", value: 200 },
 ];
+let data2 = [];
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -37,11 +38,15 @@ const renderCustomizedLabel = ({
   );
 };
 
-function BarchartAnalysis() {
+const BarchartAnalysis = (props) => {
+  props.data.forEach((item) => {
+    data2.push({ name: item.option, value: item.value });
+  });
+
   return (
     <PieChart width={250} height={250}>
       <Pie
-        data={data}
+        data={data2}
         cx={120}
         cy={120}
         labelLine={false}
@@ -56,6 +61,6 @@ function BarchartAnalysis() {
       </Pie>
     </PieChart>
   );
-}
+};
 
 export default BarchartAnalysis;

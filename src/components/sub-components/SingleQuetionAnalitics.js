@@ -1,7 +1,7 @@
 import React from "react";
 import BarchartAnalysis from "./BarchartAnalysis";
 
-const SingleQuetionAnalitics = () => {
+const SingleQuetionAnalitics = ({ data }) => {
   return (
     <>
       <div className="d-flex flex-row">
@@ -11,7 +11,7 @@ const SingleQuetionAnalitics = () => {
             borderWidth: 1,
           }}
         >
-          <BarchartAnalysis />
+          <BarchartAnalysis data={data.data} />
         </div>
         <div
           style={{
@@ -26,42 +26,34 @@ const SingleQuetionAnalitics = () => {
               marginBottom: 20,
             }}
           >
-            ese mufite uwbwishingizi mukwvuza ?
+            {data.question}
           </h5>
 
           <div>
-            <div
-              className="d-flex flex-row"
-              style={{
-                marginBottom: 10,
-              }}
-            >
-              <div
-                style={{
-                  height: 20,
-                  width: 20,
-                  backgroundColor: "red",
-                  marginRight: 10,
-                }}
-              ></div>
-              <div>
-                <h6>Yeg</h6>
-              </div>
-            </div>
-
-            <div className="d-flex flex-row">
-              <div
-                style={{
-                  height: 20,
-                  width: 20,
-                  backgroundColor: "red",
-                  marginRight: 10,
-                }}
-              ></div>
-              <div>
-                <h6>Yeg</h6>
-              </div>
-            </div>
+            {data.data.map((option, index) => {
+              return (
+                <div key={index.toString()}>
+                  <div
+                    className="d-flex flex-row"
+                    style={{
+                      marginBottom: 10,
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: 20,
+                        width: 20,
+                        backgroundColor: "red",
+                        marginRight: 10,
+                      }}
+                    ></div>
+                    <div>
+                      <h6>{option.option}</h6>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
