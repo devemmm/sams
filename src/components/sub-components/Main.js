@@ -9,14 +9,23 @@ const Main = () => {
   const [cookies, setCookie] = useCookies('["sams"]');
   const [surveys, setSurveys] = useState([]);
   const [showDeleteModel, setShowDeleteModel] = useState(true);
-
   const [surveyStatistics, setSurveyStatistics] = useState([]);
+  const [surveyId, setSurveyId] = useState("621601d3869342337a39c560");
 
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
     setSurveys(cookies.surveys);
-    fetch(`${samsApi}/surveyresponses/statistics/621601d3869342337a39c560`, {
+
+    getSurveyStatistics(signal, surveyId);
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  const getSurveyStatistics = (signal, surveyId) => {
+    fetch(`${samsApi}/surveyresponses/statistics/${surveyId}`, {
       method: "get",
       signal: signal,
       headers: {
@@ -38,12 +47,7 @@ const Main = () => {
       .catch((error) => {
         console.log(error.message);
       });
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
+  };
   const handleDeleteSurvey = (e) => {
     e.preventDefault();
     setShowDeleteModel(false);
@@ -81,12 +85,23 @@ const Main = () => {
                           <select
                             className="form-select"
                             aria-label="Default select example"
+                            onChange={(e) => {
+                              e.preventDefault();
+
+                              const controller = new AbortController();
+                              const signal = controller.signal;
+                              setSurveyId(e.target.value);
+
+                              getSurveyStatistics(signal, surveyId);
+                            }}
                           >
-                            {surveys.map((item, index) => (
-                              <option key={item._id} value={item._id}>
-                                {item.name}
-                              </option>
-                            ))}
+                            {surveys.map((item) => {
+                              return (
+                                <option key={item._id} value={item._id}>
+                                  {item.name}
+                                </option>
+                              );
+                            })}
                           </select>
                         </div>
                       </div>

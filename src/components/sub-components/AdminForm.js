@@ -1,6 +1,10 @@
 import React, { useState, useReducer } from "react";
 import _ from "lodash";
 import constants from "../../libs/constants";
+import samsApi from "../apis/sams-api";
+import ActivityIndicator from "./ActivityIndicator";
+import Alert from "./Alert";
+
 const { ERROR } = constants;
 
 const reducer = (state, action) => {
@@ -9,11 +13,11 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "add_question_field":
       questions = state.questions;
-      questions.push({ question: "", answer: [""] });
+      questions.push({ question: "", options: [""] });
       return { ...state, questions };
 
     case "add_answer_field":
-      state.questions[action.payload].answer.push("");
+      state.questions[action.payload].options.push("");
       return { ...state };
 
     case "remove_quetion_field":
@@ -22,10 +26,10 @@ const reducer = (state, action) => {
     case "remove_answer_field":
       const inital = state;
       const initalquetion = inital.questions[action.payload];
-      const lastFieldAfterDrop = _.dropRight(initalquetion.answer);
+      const lastFieldAfterDrop = _.dropRight(initalquetion.options);
       let pp = inital;
 
-      pp.questions[action.payload].answer = lastFieldAfterDrop;
+      pp.questions[action.payload].options = lastFieldAfterDrop;
       return { ...state };
 
     case "add_question_text":
@@ -35,8 +39,9 @@ const reducer = (state, action) => {
       return { ...state, questions };
 
     case "add_answer_text":
-      state.questions[action.payload.index].answer[action.payload.answerIndex] =
-        action.payload.value;
+      state.questions[action.payload.index].options[
+        action.payload.answerIndex
+      ] = action.payload.value;
 
       return { ...state };
 
@@ -50,10 +55,16 @@ const reducer = (state, action) => {
 const AdminForm = () => {
   const [survey, dispatch] = useReducer(reducer, {
     name: "",
-    questions: [{ question: "", answer: [""] }],
+    questions: [{ question: "", options: [""] }],
   });
 
   const defaultError = { ERROR: "", MSG: "" };
+
+  const [alert, setAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("ewhfr ejk");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState(defaultError);
 
@@ -108,8 +119,8 @@ const AdminForm = () => {
       case "answer":
         if (
           _.isEmpty(
-            survey.questions[index].answer[
-              survey.questions[index].answer.length - 1
+            survey.questions[index].options[
+              survey.questions[index].options.length - 1
             ]
           )
         ) {
@@ -192,9 +203,37 @@ const AdminForm = () => {
     });
 
     if (_.isEmpty(error.ERROR) && _.isEmpty(error.MSG)) {
-      // console.log("you can submit");
-
-      console.log(survey);
+      setIsLoading(true);
+      fetch(`${samsApi}/survey`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...survey,
+        }),
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          if (res.status !== 200) {
+            setIsLoading(false);
+            setShowAlert(true);
+            setAlertType("danger");
+            setAlertMessage(res.message);
+          } else {
+            setIsLoading(false);
+            setAlertMessage("survey form created successfull");
+            setAlertType("success");
+            setAlert(true);
+          }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          setShowAlert(true);
+          setAlertType("danger");
+          setAlertMessage(error.message);
+        });
     }
     return;
   };
@@ -206,6 +245,12 @@ const AdminForm = () => {
           <div className="col-lg-6" style={{ marginLeft: 400, marginTop: 100 }}>
             <div className="card">
               <div className="card-body">
+                {isLoading ? (
+                  <ActivityIndicator />
+                ) : alert ? (
+                  <Alert type={alertType} message={alertMessage} />
+                ) : null}
+
                 <h5 className="card-title">Set new survey form here.</h5>
 
                 {error.MSG ? (
@@ -260,7 +305,7 @@ const AdminForm = () => {
                             </div>
                           </div>
 
-                          {itemq.answer.map((item, index2) => {
+                          {itemq.options.map((item, index2) => {
                             return (
                               <div key={index2.toString()}>
                                 <div
@@ -291,7 +336,7 @@ const AdminForm = () => {
                                     />
 
                                     {index2 ===
-                                    survey.questions[index1].answer.length -
+                                    survey.questions[index1].options.length -
                                       1 ? (
                                       <AddRemove
                                         type="answer"

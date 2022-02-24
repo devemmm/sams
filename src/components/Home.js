@@ -6,6 +6,7 @@ import Main from "./sub-components/Main";
 import Footer from "./sub-components/Footer";
 import { useCookies } from "react-cookie";
 import samsApi from "./apis/sams-api";
+import Usermain from "./sub-components/Usermain";
 
 const Home = () => {
   const [cookies, setCookie] = useCookies('["sams"]');
@@ -45,7 +46,8 @@ const Home = () => {
         <div>
           <Header />
           <Asidebar />
-          <Main />
+          {cookies.user.userType === "admin" ? <Main /> : <Usermain />}
+
           <Footer />
         </div>
       ) : null}
