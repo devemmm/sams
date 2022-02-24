@@ -1,5 +1,6 @@
 import React from "react";
 import BarchartAnalysis from "./BarchartAnalysis";
+import constants from "../../libs/constants";
 
 const SingleQuetionAnalitics = ({ data }) => {
   return (
@@ -43,7 +44,7 @@ const SingleQuetionAnalitics = ({ data }) => {
                       style={{
                         height: 20,
                         width: 20,
-                        backgroundColor: "red",
+                        backgroundColor: constants.COLORS[index],
                         marginRight: 10,
                       }}
                     ></div>

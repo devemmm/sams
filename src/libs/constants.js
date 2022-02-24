@@ -16,6 +16,7 @@ const constants = {
       MSG: "Expected option should not be null",
     },
   },
+  COLORS: ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"],
 };
 
 export default constants;

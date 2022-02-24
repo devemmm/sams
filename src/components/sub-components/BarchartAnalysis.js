@@ -1,15 +1,6 @@
 import React from "react";
 import { PieChart, Pie, Cell } from "recharts";
-
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-let data2 = [];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+import constants from "../../libs/constants";
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -39,14 +30,10 @@ const renderCustomizedLabel = ({
 };
 
 const BarchartAnalysis = (props) => {
-  props.data.forEach((item) => {
-    data2.push({ name: item.option, value: item.value });
-  });
-
   return (
     <PieChart width={250} height={250}>
       <Pie
-        data={data2}
+        data={props.data}
         cx={120}
         cy={120}
         labelLine={false}
@@ -55,8 +42,11 @@ const BarchartAnalysis = (props) => {
         fill="#8884d8"
         dataKey="value"
       >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        {props.data.map((entry, index) => (
+          <Cell
+            key={`cell-${index}`}
+            fill={constants.COLORS[index % constants.COLORS.length]}
+          />
         ))}
       </Pie>
     </PieChart>

@@ -13,13 +13,12 @@ const Main = () => {
   const [surveyStatistics, setSurveyStatistics] = useState([]);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     setSurveys(cookies.surveys);
-    fetchSurveyAnalysis();
-  }, []);
-
-  const fetchSurveyAnalysis = () => {
     fetch(`${samsApi}/surveyresponses/statistics/621601d3869342337a39c560`, {
       method: "get",
+      signal: signal,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -29,7 +28,6 @@ const Main = () => {
       .then((res) => {
         if (res.status !== 200) {
         } else {
-          setSurveyStatistics(res.data);
           setCookie("surveyStatistics", JSON.stringify(res.data), {
             path: "/",
           });
@@ -40,7 +38,11 @@ const Main = () => {
       .catch((error) => {
         console.log(error.message);
       });
-  };
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
 
   const handleDeleteSurvey = (e) => {
     e.preventDefault();
