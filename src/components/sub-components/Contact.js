@@ -1,6 +1,7 @@
 import React, { useReducer, useState } from "react";
 import ActivityIndicator from "./ActivityIndicator";
 import Alert from "./Alert";
+import samsApi from "../apis/sams-api";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -33,7 +34,7 @@ const Contact = () => {
   const handleSubmitForm = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    fetch("http://localhost:3001/users/message", {
+    fetch(`${samsApi}/users/message`, {
       method: "post",
       headers: {
         Accept: "application/json",
