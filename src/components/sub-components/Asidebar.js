@@ -35,7 +35,7 @@ const Asidebar = () => {
             </div>
           ) : null}
 
-          {cookies.user.userType == "user" ? (
+          {cookies.user.userType === "user" ? (
             <div>
               <li className="nav-item" style={margin}>
                 <Link className="nav-link " to="/home">

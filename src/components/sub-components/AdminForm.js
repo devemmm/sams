@@ -19,8 +19,8 @@ const reducer = (state, action) => {
 
     case "add_answer_field":
       state.questions[action.payload].options.push("");
+
       return { ...state };
-    // return { ...state, questions: [...state.questions, question : action.payload] =  [...state.questions.options, '' ]] };
 
     case "remove_quetion_field":
       return { ...state, questions: _.dropRight(state.questions) };
@@ -63,7 +63,7 @@ const AdminForm = () => {
   const defaultError = { ERROR: "", MSG: "" };
 
   const [alert, setAlert] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const [alertMessage, setAlertMessage] = useState("ewhfr ejk");
   const [isLoading, setIsLoading] = useState(false);
@@ -191,7 +191,6 @@ const AdminForm = () => {
     e.preventDefault();
 
     if (_.isEmpty(survey.name)) {
-      console.log(survey.name);
       return setError(ERROR.SURVEY_NAME);
     }
 
@@ -220,7 +219,7 @@ const AdminForm = () => {
         .then((res) => {
           if (res.status !== 200) {
             setIsLoading(false);
-            setShowAlert(true);
+            // setShowAlert(true);
             setAlertType("danger");
             setAlertMessage(res.message);
           } else {
@@ -232,7 +231,7 @@ const AdminForm = () => {
         })
         .catch((error) => {
           setIsLoading(false);
-          setShowAlert(true);
+          // setShowAlert(true);
           setAlertType("danger");
           setAlertMessage(error.message);
         });
