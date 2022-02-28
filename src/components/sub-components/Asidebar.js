@@ -6,7 +6,6 @@ const Asidebar = () => {
   const margin = { marginTop: 20 };
   const [cookies] = useCookies('["sams"]');
 
-  console.log(cookies.user.userType);
   return (
     <>
       <aside id="sidebar" className="sidebar">
