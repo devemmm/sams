@@ -12,13 +12,15 @@ const reducer = (state, action) => {
 
   switch (action.type) {
     case "add_question_field":
-      questions = state.questions;
-      questions.push({ question: "", options: [""] });
-      return { ...state, questions };
+      return {
+        ...state,
+        questions: [...state.questions, { question: "", options: [""] }],
+      };
 
     case "add_answer_field":
       state.questions[action.payload].options.push("");
       return { ...state };
+    // return { ...state, questions: [...state.questions, question : action.payload] =  [...state.questions.options, '' ]] };
 
     case "remove_quetion_field":
       return { ...state, questions: _.dropRight(state.questions) };
