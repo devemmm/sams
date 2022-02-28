@@ -104,6 +104,7 @@ const Usermain = () => {
     const answer = e.target.value;
 
     if (!state.surveyId && !state.surveyName) {
+      setAlert(false);
       dispatch({
         type: "set_servey_info",
         payload: {
