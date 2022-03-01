@@ -4,6 +4,8 @@ import { useCookies } from "react-cookie";
 import UserMesages from "../UserMesages";
 import SingleQuetionAnalitics from "./SingleQuetionAnalitics";
 import samsApi from "../apis/sams-api";
+import ActivityIndicator from "./ActivityIndicator";
+import Alert from "./Alert";
 
 const Main = () => {
   const [cookies, setCookie] = useCookies('["sams"]');
@@ -11,6 +13,11 @@ const Main = () => {
   const [showDeleteModel, setShowDeleteModel] = useState(true);
   const [surveyStatistics, setSurveyStatistics] = useState([]);
   const [surveyId, setSurveyId] = useState("621601d3869342337a39c560");
+
+  const [alert, setAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,6 +59,43 @@ const Main = () => {
     e.preventDefault();
     setShowDeleteModel(false);
   };
+
+
+  const handleGenerateReport =  ()=>{
+    setIsLoading(true);
+    fetch(`${samsApi}/surveyResponses/report`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        generateReport: true,
+        email: cookies.user.email
+      }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        setIsLoading(false)
+        if (res.status !== 200) {
+          setAlert(true)
+          setAlertType("danger");
+          setAlertMessage("Something went wrog Ops issues");
+        } else {
+          setAlert(true);
+          setAlertType("success");
+          setAlertMessage(res.data.info);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message)
+        setIsLoading(false)
+        setAlert(true)
+          setAlertType("danger");
+          setAlertMessage("Something went wrog Ops issues");
+      });    
+
+  }
 
   return (
     <>
@@ -251,39 +295,27 @@ const Main = () => {
                           </span>
                         </div>
                       </div>
+                      
+                      <button
+                      type="button"
+                      className="btn btn-primary d-flex"
+                      style={{width: '100%', textAlign: 'center'}}
+                      onClick = {handleGenerateReport}
+                      >Gen Survey Reports</button>
+                    
                     </div>
                   </div>
                 </div>
 
+
+                {
+                  isLoading ? <ActivityIndicator  /> : alert ?  <Alert type={alertType} message={alertMessage} />: null
+                }
+
+                
+                
                 <div className="col-12">
                   <div className="card">
-                    <div className="filter">
-                      <Link className="icon" to="#" data-bs-toggle="dropdown">
-                        <i className="bi bi-three-dots"></i>
-                      </Link>
-                      <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <li className="dropdown-header text-start">
-                          <h6>Filter</h6>
-                        </li>
-
-                        <li>
-                          <Link className="dropdown-item" to="#">
-                            Today
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item" to="#">
-                            This Month
-                          </Link>
-                        </li>
-                        <li>
-                          <Link className="dropdown-item" to="#">
-                            This Year
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-
                     <div className="card-body">
                       <h5 className="card-title">
                         Reports <span>/Today</span>
