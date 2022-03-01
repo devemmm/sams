@@ -343,10 +343,35 @@ h6 {
     width: 280px;
   }
 }
+
+.logo-high {
+  line-height: 1;
+}
+@media (min-width: 1200px) {
+  .logo-high {
+    width: 280px;
+  }
+}
+
 .logo img {
-  max-height: 26px;
+  /* max-height: 26px; */
+  max-height: 50px;
+
   margin-right: 6px;
 }
+.logo-high img {
+  /* max-height: 26px; */
+  max-height: 150px;
+
+  margin-right: 6px;
+}
+.logo-high span {
+  font-size: 26px;
+  font-weight: 700;
+  color: #012970;
+  font-family: 'Nunito', sans-serif;
+}
+
 .logo span {
   font-size: 26px;
   font-weight: 700;

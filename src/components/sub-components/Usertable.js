@@ -7,7 +7,7 @@ const Usertable = () => {
 
   useEffect(() => {
     fetchUsersList();
-  }, [users]);
+  }, []);
 
   const fetchUsersList = () => {
     fetch(`${samsApi}/users`, {
@@ -53,7 +53,7 @@ const Usertable = () => {
               <div className="card">
                 <div className="card-body">
                   <h5 className="card-title">
-                    Users <span>| This Year</span>
+                    Users <span>| This Month</span>
                   </h5>
 
                   <div className="d-flex align-items-center">

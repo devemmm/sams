@@ -64,7 +64,7 @@ const Profilebody = () => {
               <div className="card">
                 <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                   <img
-                    src="assets/img/profile-img.jpg"
+                    src={cookies.user.avatar}
                     alt="Profile"
                     className="rounded-circle"
                   />
@@ -201,7 +201,7 @@ const Profilebody = () => {
                       <form>
                         <div className="row mb-3">
                           <label
-                            for="profileImage"
+                            htmlFor="profileImage"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Profile Image
@@ -232,7 +232,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="fullName"
+                            htmlFor="fullName"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Full Name
@@ -243,7 +243,7 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="fullName"
-                              value={state.fname}
+                              defaultValue={state.fname}
                               // value={state.fname}
                               // onChange
                               disabled
@@ -253,7 +253,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="about"
+                            htmlFor="about"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             About
@@ -279,7 +279,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="company"
+                            htmlFor="company"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Company
@@ -290,7 +290,7 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="company"
-                              value={state.company}
+                              defaultValue={state.company}
                               disabled
                             />
                           </div>
@@ -298,7 +298,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="Job"
+                            htmlFor="Job"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Job
@@ -309,7 +309,7 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="Job"
-                              value={state.userType}
+                              defaultValue={state.userType}
                               disabled
                             />
                           </div>
@@ -317,7 +317,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="Country"
+                            htmlFor="Country"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Country
@@ -342,7 +342,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="Address"
+                            htmlFor="Address"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Address
@@ -353,14 +353,14 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="Address"
-                              value={state.address}
+                              defaultValue={state.address}
                             />
                           </div>
                         </div>
 
                         <div className="row mb-3">
                           <label
-                            for="Phone"
+                            htmlFor="Phone"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Phone
@@ -371,14 +371,14 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="Phone"
-                              value={state.phone}
+                              defaultValue={state.phone}
                             />
                           </div>
                         </div>
 
                         <div className="row mb-3">
                           <label
-                            for="Email"
+                            htmlFor="Email"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Email
@@ -389,7 +389,7 @@ const Profilebody = () => {
                               type="email"
                               className="form-control"
                               id="Email"
-                              value={state.email}
+                              defaultValue={state.email}
                               disabled
                             />
                           </div>
@@ -407,7 +407,7 @@ const Profilebody = () => {
                       <form>
                         <div className="row mb-3">
                           <label
-                            for="fullName"
+                            htmlFor="fullName"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Email Notifications
@@ -418,11 +418,12 @@ const Profilebody = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 id="changesMade"
-                                checked
+                                // checked
+                                defaultChecked
                               />
                               <label
                                 className="form-check-label"
-                                for="changesMade"
+                                htmlFor="changesMade"
                               >
                                 Changes made to your account
                               </label>
@@ -432,11 +433,11 @@ const Profilebody = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 id="newProducts"
-                                checked
+                                defaultChecked
                               />
                               <label
                                 className="form-check-label"
-                                for="newProducts"
+                                htmlFor="newProducts"
                               >
                                 Information on new products and services
                               </label>
@@ -449,7 +450,7 @@ const Profilebody = () => {
                               />
                               <label
                                 className="form-check-label"
-                                for="proOffers"
+                                htmlFor="proOffers"
                               >
                                 Marketing and promo offers
                               </label>
@@ -459,12 +460,12 @@ const Profilebody = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 id="securityNotify"
-                                checked
+                                defaultChecked
                                 disabled
                               />
                               <label
                                 className="form-check-label"
-                                for="securityNotify"
+                                htmlFor="securityNotify"
                               >
                                 Security alerts
                               </label>
@@ -487,7 +488,7 @@ const Profilebody = () => {
                       <form onSubmit={handleChangePassword}>
                         <div className="row mb-3">
                           <label
-                            for="currentPassword"
+                            htmlFor="currentPassword"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Current Password
@@ -505,7 +506,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="newPassword"
+                            htmlFor="newPassword"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             New Password
@@ -523,7 +524,7 @@ const Profilebody = () => {
 
                         <div className="row mb-3">
                           <label
-                            for="renewPassword"
+                            htmlFor="renewPassword"
                             className="col-md-4 col-lg-3 col-form-label"
                           >
                             Re-enter New Password
