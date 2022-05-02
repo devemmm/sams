@@ -44,6 +44,7 @@ const Profilebody = () => {
   };
   return (
     <>
+      {console.log(user)}
       <main id="main" className="main">
         <div className="pagetitle">
           <h1>Profile</h1>
@@ -161,9 +162,7 @@ const Profilebody = () => {
 
                       <div className="row">
                         <div className="col-lg-3 col-md-4 label">Company</div>
-                        <div className="col-lg-9 col-md-8">
-                          Sanitation accessability Monitoring System (SAMS)
-                        </div>
+                        <div className="col-lg-9 col-md-8">{user.company}</div>
                       </div>
 
                       <div className="row">
@@ -173,14 +172,12 @@ const Profilebody = () => {
 
                       <div className="row">
                         <div className="col-lg-3 col-md-4 label">Country</div>
-                        <div className="col-lg-9 col-md-8">RWANDA</div>
+                        <div className="col-lg-9 col-md-8">{user.country}</div>
                       </div>
 
                       <div className="row">
                         <div className="col-lg-3 col-md-4 label">Address</div>
-                        <div className="col-lg-9 col-md-8">
-                          KG 181 Street, KIGALI, Rwanda
-                        </div>
+                        <div className="col-lg-9 col-md-8">{user.address}</div>
                       </div>
 
                       <div className="row">
@@ -207,10 +204,7 @@ const Profilebody = () => {
                             Profile Image
                           </label>
                           <div className="col-md-8 col-lg-9">
-                            <img
-                              src="assets/img/profile-img.jpg"
-                              alt="Profile"
-                            />
+                            <img src={cookies.user.avatar} alt="Profile" />
                             <div className="pt-2">
                               <Link
                                 to="#"
