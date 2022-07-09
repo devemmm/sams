@@ -30,6 +30,7 @@ const renderCustomizedLabel = ({
 };
 
 const BarchartAnalysis = (props) => {
+  console.log(props.data)
   return (
     <PieChart width={250} height={250}>
       <Pie

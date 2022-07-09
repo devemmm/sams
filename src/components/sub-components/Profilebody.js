@@ -1,6 +1,9 @@
 import React, { useState, useReducer } from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import ActivityIndicator from "./ActivityIndicator";
+import samsApi from "../apis/sams-api";
+import Alert from "./Alert";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -29,22 +32,119 @@ const Profilebody = () => {
   const [state, dispatch] = useReducer(reducer, {
     fname: user.fname,
     lname: user.lname,
-    about:
-      "Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.",
-    company: "Sanitation accessability Monitoring System (SAMS)",
+    about: user.about,
+    company: user.company,
     userType: user.userType,
-    country: "RWANDA",
-    address: "KG 181 Street, KIGALI, Rwanda",
+    country: user.country,
+    address: user.address,
     phone: user.phone,
     email: user.email,
   });
 
+  const [alert, setAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setconfirmPassword] = useState('')
+
+  const handleUpdateAccount = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    fetch(`${samsApi}/users`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
+        about: state.about,
+        country: state.country,
+        address: state.address,
+        phone: state.phone
+      })
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res)
+        if (res.status !== 200) {
+          setIsLoading(false);
+          setAlertType("danger");
+          setAlertMessage(res.message.toString());
+          setAlert(true);
+        } else {
+
+          setIsLoading(false);
+          setAlertType("success");
+          setAlertMessage(res.data.message.toString());
+          setAlert(true);
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setAlertType("danger");
+        setAlertMessage("something went wrong ... Ops issues");
+        setAlert(true);
+      });
+  }
+
+
   const handleChangePassword = (e) => {
     e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      setAlert(true)
+      setAlertType("danger")
+      console.log("not much")
+      return setAlertMessage("password does not match")
+    }
+
+
+    setIsLoading(true);
+    fetch(`${samsApi}/users/password`, {
+      method: "post",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
+        password: currentPassword,
+        newPassword
+      })
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res)
+        if (res.status !== 200) {
+          setIsLoading(false);
+          setAlertType("danger");
+          setAlertMessage(res.message.toString());
+          setAlert(true);
+        } else {
+
+          setIsLoading(false);
+          setAlertType("success");
+          setAlertMessage(res.data.message.toString());
+          setAlert(true);
+          setCurrentPassword("")
+          setNewPassword("")
+          setconfirmPassword("")
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setAlertType("danger");
+        setAlertMessage("something went wrong ... Ops issues");
+        setAlert(true);
+      });
   };
   return (
     <>
-      {console.log(user)}
       <main id="main" className="main">
         <div className="pagetitle">
           <h1>Profile</h1>
@@ -60,6 +160,11 @@ const Profilebody = () => {
         </div>
 
         <section className="section profile">
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : alert ? (
+            <Alert type={alertType} message={alertMessage} />
+          ) : null}
           <div className="row">
             <div className="col-xl-4">
               <div className="card">
@@ -142,11 +247,7 @@ const Profilebody = () => {
                     >
                       <h5 className="card-title">About</h5>
                       <p className="small fst-italic">
-                        Sunt est soluta temporibus accusantium neque nam maiores
-                        cumque temporibus. Tempora libero non est unde veniam
-                        est qui dolor. Ut sunt iure rerum quae quisquam autem
-                        eveniet perspiciatis odit. Fuga sequi sed ea saepe at
-                        unde.
+                        {state.about}
                       </p>
 
                       <h5 className="card-title">Profile Details</h5>
@@ -195,7 +296,7 @@ const Profilebody = () => {
                       className="tab-pane fade profile-edit pt-3"
                       id="profile-edit"
                     >
-                      <form>
+                      <form onSubmit={handleUpdateAccount}>
                         <div className="row mb-3">
                           <label
                             htmlFor="profileImage"
@@ -347,7 +448,14 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="Address"
-                              defaultValue={state.address}
+                              value={state.address}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                dispatch({
+                                  type: "address",
+                                  payload: e.target.value,
+                                });
+                              }}
                             />
                           </div>
                         </div>
@@ -365,7 +473,14 @@ const Profilebody = () => {
                               type="text"
                               className="form-control"
                               id="Phone"
-                              defaultValue={state.phone}
+                              value={state.phone}
+                              onChange={(e) => {
+                                e.preventDefault();
+                                dispatch({
+                                  type: "phone",
+                                  payload: e.target.value,
+                                });
+                              }}
                             />
                           </div>
                         </div>
@@ -494,6 +609,11 @@ const Profilebody = () => {
                               className="form-control"
                               id="currentPassword"
                               required
+                              value={currentPassword}
+                              onChange={e => {
+                                e.preventDefault()
+                                setCurrentPassword(e.target.value)
+                              }}
                             />
                           </div>
                         </div>
@@ -512,6 +632,11 @@ const Profilebody = () => {
                               className="form-control"
                               id="newPassword"
                               required
+                              value={newPassword}
+                              onChange={e => {
+                                e.preventDefault()
+                                setNewPassword(e.target.value)
+                              }}
                             />
                           </div>
                         </div>
@@ -530,6 +655,11 @@ const Profilebody = () => {
                               className="form-control"
                               id="renewPassword"
                               required
+                              value={confirmPassword}
+                              onChange={e => {
+                                e.preventDefault()
+                                setconfirmPassword(e.target.value)
+                              }}
                             />
                           </div>
                         </div>

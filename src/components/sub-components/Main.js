@@ -13,6 +13,7 @@ const Main = () => {
   const [showDeleteModel, setShowDeleteModel] = useState(true);
   const [surveyStatistics, setSurveyStatistics] = useState([]);
   const [surveyId, setSurveyId] = useState("621601d3869342337a39c560");
+  const [deleteSurveyId, setDeleteSurveyId] = useState('')
 
   const [alert, setAlert] = useState(false);
   const [alertType, setAlertType] = useState("success");
@@ -57,11 +58,41 @@ const Main = () => {
   };
   const handleDeleteSurvey = (e) => {
     e.preventDefault();
-    setShowDeleteModel(false);
+
+    if (deleteSurveyId === "--select--" || !deleteSurveyId) {
+      setAlert(true);
+      setAlertType("success");
+      return setAlertMessage("please select survey you want to delete to delete");
+    }
+
+    fetch(`${samsApi}/survey/${deleteSurveyId}`, {
+      method: "delete",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        setAlert(true);
+        if (res.status === 500) {
+          setAlertType("danger");
+          setAlertMessage(res.message);
+        } else {
+          setAlertType("success");
+          setAlertMessage(res.data.message);
+        }
+      })
+      .catch((error) => {
+        setShowDeleteModel(false);
+        setAlert(true);
+        setAlertType("danger");
+        setAlertMessage(error.message);
+      });
   };
 
 
-  const handleGenerateReport =  ()=>{
+  const handleGenerateReport = () => {
     setIsLoading(true);
     fetch(`${samsApi}/surveyResponses/report`, {
       method: "post",
@@ -91,9 +122,9 @@ const Main = () => {
         console.log(error.message)
         setIsLoading(false)
         setAlert(true)
-          setAlertType("danger");
-          setAlertMessage("Something went wrog Ops issues");
-      });    
+        setAlertType("danger");
+        setAlertMessage("Something went wrog Ops issues");
+      });
 
   }
 
@@ -170,9 +201,14 @@ const Main = () => {
                       <div className="row mb-3">
                         <div className="col-sm-12">
                           <select
-                            className="form-select"
+                            className="form-select delete-option"
                             aria-label="Default select example"
+                            onChange={(e) => {
+                              e.preventDefault();
+                              setDeleteSurveyId(e.target.value)
+                            }}
                           >
+                            <option>--select--</option>
                             {surveys.map((item, index) => (
                               <option key={item._id} value={item._id}>
                                 {item.name}
@@ -295,25 +331,25 @@ const Main = () => {
                           </span>
                         </div>
                       </div>
-                      
+
                       <button
-                      type="button"
-                      className="btn btn-primary d-flex"
-                      style={{width: '100%', textAlign: 'center'}}
-                      onClick = {handleGenerateReport}
+                        type="button"
+                        className="btn btn-primary d-flex"
+                        style={{ width: '100%', textAlign: 'center' }}
+                        onClick={handleGenerateReport}
                       >Gen Survey Reports</button>
-                    
+
                     </div>
                   </div>
                 </div>
 
 
                 {
-                  isLoading ? <ActivityIndicator  /> : alert ?  <Alert type={alertType} message={alertMessage} />: null
+                  isLoading ? <ActivityIndicator /> : alert ? <Alert type={alertType} message={alertMessage} /> : null
                 }
 
-                
-                
+
+
                 <div className="col-12">
                   <div className="card">
                     <div className="card-body">
@@ -396,7 +432,7 @@ const Main = () => {
                       </ul>
                     </div>
 
-                    
+
                   </div>
                 </div>
               </div>

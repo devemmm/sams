@@ -192,6 +192,10 @@ const SigninForm = (props) => {
                           Don't have account?{" "}
                           <Link to="/signup">Create an account</Link>
                         </p>
+                        <p className="small mb-0">
+                          Need help?{" "}
+                          <Link to="/contact-us">contact-us</Link>
+                        </p>
                       </div>
                     </form>
                   </div>

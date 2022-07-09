@@ -14,16 +14,12 @@ const Indexnavbar = () => {
         <Link className="nav-item nav-link" to="/signin">
           Signin
         </Link>
-        <Link className="nav-item nav-link" to="#">
-          Contact Us
-        </Link>
-
         <Link
           className="nav-item nav-link"
           to="/signin"
           style={{ backgroundColor: "blue", color: "#fff", borderRadius: 5 }}
         >
-          Home
+          Contact Us
         </Link>
       </div>
     </>

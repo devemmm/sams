@@ -40,7 +40,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         uid: action.payload.uid,
-        surveyId: action.payload.uid,
+        surveyId: action.payload.surveyId,
         surveyName: action.payload.surveyName,
       };
 
@@ -86,7 +86,7 @@ const Usermain = () => {
           setAlertType("success");
           setAlertMessage("now you can respond this survey");
           setAlert(true);
-          setSurvey(res.data[res.data.length > 0 ? res.data.length - 2 : 0]);
+          setSurvey(res.data[res.data.length > 0 ? res.data.length - 1 : 0]);
         }
       })
       .catch((error) => {
@@ -124,6 +124,7 @@ const Usermain = () => {
   const handleSubmitSurvey = (e) => {
     e.preventDefault();
 
+    console.log(state.uid)
     if (state.answers.length === 0 && survey.questions.length !== 0) {
       setIsLoading(false);
       setAlertType("danger");
@@ -133,6 +134,7 @@ const Usermain = () => {
 
     setAlert(false);
     setIsLoading(true);
+    console.log({ state })
     fetch(`${samsApi}/surveyResponses`, {
       method: "post",
       headers: {
@@ -140,7 +142,7 @@ const Usermain = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...survey,
+        ...state,
       }),
     })
       .then((response) => response.json())
@@ -206,9 +208,7 @@ const Usermain = () => {
                             </label>
                             <div className="col-sm-8">
                               <h4>
-                                Break the ice and get to know people better by
-                                selecting several of these get-to-know-you
-                                questions.
+                                {question?.question}
                               </h4>
                             </div>
                           </div>
